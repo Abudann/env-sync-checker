@@ -33,7 +33,10 @@ jobs:
         continue-on-error: true
 
       - name: Verify failure
-        if: steps.env-sync.outcome != 'failure'
+        if: always()
         run: |
-          echo "Error: The action should have failed due to missing keys, but it succeeded!"
-          exit 1
+          if [ "${{ steps.env-sync.outcome }}" != "failure" ]; then
+            echo "Error: The action should have failed due to missing keys, but it succeeded!"
+            exit 1
+          fi
+          echo "Success: The action correctly detected missing keys and failed as expected."
