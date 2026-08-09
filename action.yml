@@ -1,0 +1,26 @@
+name: "Env Sync Checker"
+description: "Compare your .env and .env.example files and catch missing keys before they break someone else's setup."
+branding:
+  icon: "check-square"
+  color: "green"
+
+inputs:
+  env:
+    description: "Path to the .env file"
+    required: false
+    default: ".env"
+  example:
+    description: "Path to the .env.example file"
+    required: false
+    default: ".env.example"
+  config:
+    description: "Path to the .envsyncrc config file"
+    required: false
+    default: ".envsyncrc"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run env-sync-checker
+      shell: bash
+      run: npx --yes env-sync-checker@latest --env "${{ inputs.env }}" --example "${{ inputs.example }}" --config "${{ inputs.config }}"

@@ -1,0 +1,39 @@
+name: Test Action
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create dummy .env files
+        run: |
+          echo "API_KEY=123" > dummy.env
+          echo "DB_HOST=localhost" >> dummy.env
+          
+          echo "API_KEY=" > dummy.example
+          # Intentionally missing DB_HOST to trigger a mismatch
+
+      - name: Test env-sync-checker Action
+        id: env-sync
+        uses: ./
+        with:
+          env: dummy.env
+          example: dummy.example
+        
+        # We expect this step to fail because DB_HOST is missing in .example
+        # The 'continue-on-error' allows the workflow to proceed so we can verify the failure
+        continue-on-error: true
+
+      - name: Verify failure
+        if: steps.env-sync.outcome != 'failure'
+        run: |
+          echo "Error: The action should have failed due to missing keys, but it succeeded!"
+          exit 1

@@ -143,7 +143,11 @@ Add this step to your GitHub Actions workflow to block PRs with missing env keys
 
 ```yaml
 - name: Check env sync
-  run: npx env-sync-checker
+  uses: Abudann/env-sync-checker@v1
+  # with:
+  #   env: .env
+  #   example: .env.example
+  #   config: .envsyncrc
 ```
 
 If any keys are out of sync, the step fails with exit code `1` and the output shows exactly which keys are missing.
