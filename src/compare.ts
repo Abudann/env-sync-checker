@@ -7,13 +7,17 @@ export interface CompareResult {
 /** Compare two sets of env keys. Returns keys missing from each side and keys in sync. */
 export function compareKeys(
   envKeys: Set<string>,
-  exampleKeys: Set<string>
+  exampleKeys: Set<string>,
+  ignoredKeys: string[] = []
 ): CompareResult {
   const missingInExample = new Set<string>();
   const missingInEnv = new Set<string>();
   const inSync = new Set<string>();
+  const ignoreSet = new Set(ignoredKeys);
 
   for (const key of envKeys) {
+    if (ignoreSet.has(key)) continue;
+
     if (exampleKeys.has(key)) {
       inSync.add(key);
     } else {
@@ -22,6 +26,8 @@ export function compareKeys(
   }
 
   for (const key of exampleKeys) {
+    if (ignoreSet.has(key)) continue;
+
     if (!envKeys.has(key)) {
       missingInEnv.add(key);
     }

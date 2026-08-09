@@ -86,6 +86,29 @@ describe("compareKeys", () => {
     expect(result.missingInExample.size).toBe(10);
     expect(result.missingInEnv.size).toBe(10);
   });
+
+  it("should ignore keys specified in ignoredKeys", () => {
+    const envKeys = new Set(["DB_HOST", "API_KEY", "NODE_ENV", "PORT"]);
+    const exampleKeys = new Set(["DB_HOST", "API_KEY"]);
+    const ignoredKeys = ["NODE_ENV", "PORT"];
+
+    const result = compareKeys(envKeys, exampleKeys, ignoredKeys);
+
+    // NODE_ENV and PORT are in env but not example, but since they are ignored, 
+    // missingInExample should be empty.
+    expect(result.missingInExample.size).toBe(0);
+    expect(result.inSync).toEqual(new Set(["DB_HOST", "API_KEY"]));
+  });
+
+  it("should ignore keys even if missing in .env", () => {
+    const envKeys = new Set(["DB_HOST"]);
+    const exampleKeys = new Set(["DB_HOST", "SECRET_FEATURE"]);
+    const ignoredKeys = ["SECRET_FEATURE"];
+
+    const result = compareKeys(envKeys, exampleKeys, ignoredKeys);
+
+    expect(result.missingInEnv.size).toBe(0);
+  });
 });
 
 describe("hasMismatch", () => {
