@@ -1,0 +1,48 @@
+{
+  "name": "env-sync-checker",
+  "version": "1.0.0",
+  "description": "CLI tool to compare .env and .env.example files, reporting missing or extra keys to prevent environment variable bugs.",
+  "license": "MIT",
+  "author": "abudan",
+  "type": "module",
+  "main": "dist/cli.js",
+  "bin": {
+    "env-sync-checker": "./bin/env-sync-checker.js"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/cli.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "env",
+    "dotenv",
+    "sync",
+    "checker",
+    "cli",
+    "environment-variables",
+    "devtools"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^3.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.4.0",
+    "commander": "^13.0.0",
+    "dotenv": "^16.5.0"
+  }
+}
