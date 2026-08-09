@@ -2,8 +2,7 @@
 
 Compare `.env` and `.env.example` files to catch missing or extra environment variable keys before they cause runtime errors.
 
-[![npm version](https://img.shields.io/npm/v/env-sync-checker)](https://www.npmjs.com/package/env-sync-checker)
-[![license](https://img.shields.io/npm/l/env-sync-checker)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/env-sync-checker)](https://www.npmjs.com/package/env-sync-checker) [![CI](https://github.com/Abudann/env-sync-checker/actions/workflows/test-action.yml/badge.svg)](https://github.com/Abudann/env-sync-checker/actions/workflows/test-action.yml) [![license](https://img.shields.io/npm/l/env-sync-checker)](./LICENSE)
 
 ## The Problem
 
