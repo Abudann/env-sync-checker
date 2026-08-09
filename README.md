@@ -58,6 +58,40 @@ env-sync-checker
   ✅ All 11 keys are in sync between .env and .env.example
 ```
 
+### Auto-fixing missing keys
+
+If you have keys in `.env` that are missing in `.env.example`, you can use the `--fix` flag to automatically append them with empty values.
+
+Before auto-fix:
+```bash
+$ env-sync-checker
+
+  🔍 Comparing .env ↔ .env.example
+
+  ❌ Missing in .env.example (2):
+     - STRIPE_API_KEY
+     - REDIS_URL
+
+  ⚠️  Missing in .env (1):
+     - DEBUG_MODE
+
+  ✅ In sync (8 keys)
+
+  Summary: 3 issues found. Run with --fix to auto-resolve.
+```
+
+After running `env-sync-checker --fix`:
+```bash
+  🔍 Comparing .env ↔ .env.example
+
+  ⚠️  Missing in .env (1):
+     - DEBUG_MODE
+
+  ✅ In sync (10 keys)
+
+  Summary: 1 issue still found. ✨ Auto-fixed keys in .env.example.
+```
+
 ### Custom file paths
 
 ```bash
@@ -70,8 +104,28 @@ env-sync-checker --env .env.staging --example .env.example
 |---|---|---|
 | `--env <path>` | Path to the `.env` file | `.env` |
 | `--example <path>` | Path to the `.env.example` file | `.env.example` |
+| `--config <path>` | Path to config file | `.envsyncrc` |
+| `--fix` | Auto-fix missing keys in `.env.example` | — |
 | `-V, --version` | Output the version number | — |
 | `-h, --help` | Display help for command | — |
+
+## Ignoring Keys with .envsyncrc
+
+Sometimes you have keys that intentionally differ between environments (e.g., `NODE_ENV`, `PORT`) and you don't want them to trigger a mismatch error.
+
+You can ignore these keys by creating an `.envsyncrc` file in JSON format in your project root:
+
+```json
+{
+  "ignore": ["NODE_ENV", "PORT"]
+}
+```
+
+By default, the tool looks for `.envsyncrc`. You can also specify a custom config path using the `--config` flag:
+
+```bash
+env-sync-checker --config ./custom/path/.envsyncrc
+```
 
 ## Exit Codes
 
